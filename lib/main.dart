@@ -1,28 +1,52 @@
+import 'package:app/pages/agreement.dart';
 import 'package:app/pages/home.dart';
+import 'package:app/pages/index.dart';
+import 'package:app/pages/login.dart';
+import 'package:app/pages/my.dart';
+import 'package:app/pages/register.dart';
+import 'package:app/states/login.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(HomePage(title: 'Home'));
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => Login())],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'App',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => IndexPage(),
+        LoginPage.route: (context) => LoginPage(),
+        RegisterPage.route: (context) => RegisterPage(),
+        AgreementPage.route: (context) => AgreementPage(),
+      },
+      onGenerateRoute: (RouteSettings settings) {
+        return MaterialPageRoute(builder: (context) {
+          String? routeName = settings.name;
+          print(routeName);
+          if (routeName == MyPage.route) {
+            if (context.read<Login>().hasLogin) {
+              return LoginPage();
+            }
+            return MyPage();
+          }
+          switch (settings.name) {
+            default:
+              return HomePage();
+          }
+        });
+      },
     );
   }
 }
