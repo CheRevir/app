@@ -1,6 +1,5 @@
 import 'package:app/pages/login.dart';
 import 'package:app/pages/page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyPage extends StatefulWidget with BasePage {

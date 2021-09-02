@@ -1,7 +1,10 @@
+import 'dart:io';
+
+import 'package:app/common/http.dart';
 import 'package:app/pages/agreement.dart';
 import 'package:app/pages/page.dart';
 import 'package:app/pages/register.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget with BasePage {
@@ -134,6 +137,19 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _login() async {
-    if ((_formKey.currentState as FormState).validate()) {}
+    print('login');
+    if ((_formKey.currentState as FormState).validate()) {
+      Dio dio = Dio();
+      var result = await dio.post('http://192.168.110.22:8080/login',
+          data: {
+            'account': _nameController.text,
+            'password': _pwdController.text
+          },
+          options: Options(headers: {"token": null}));
+      print(result.realUri);
+      print(result.statusCode);
+      print(result.statusMessage);
+      print(result);
+    }
   }
 }
