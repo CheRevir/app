@@ -139,17 +139,15 @@ class _LoginPageState extends State<LoginPage> {
   void _login() async {
     print('login');
     if ((_formKey.currentState as FormState).validate()) {
-      Dio dio = Dio();
-      var result = await dio.post('http://192.168.110.22:8080/login',
-          data: {
+      if (_checkbox) {
+      } else {}
+
+      var result = await Http.post(Request(Api.LOGIN,
+          params: {
             'account': _nameController.text,
             'password': _pwdController.text
-          },
-          options: Options(headers: {"token": null}));
-      print(result.realUri);
-      print(result.statusCode);
-      print(result.statusMessage);
-      print(result);
+          }));
+      print(result.data);
     }
   }
 }
